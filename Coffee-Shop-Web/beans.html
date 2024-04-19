@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Зерна</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+    <style>
+        /* CSS */
+        body {
+            font-family: "Montserrat";
+        }
+
+        .navbar {
+            margin: 0 10%;
+            height: 7%;
+        }
+
+        .navbar-brand {
+            color: white;
+            margin-top: 50px;
+        }
+
+        .navbar-nav {
+            margin-left: 80%;
+            margin-top: 50px;
+        }
+
+        .nav-item {
+            margin-right: 5%;
+        }
+
+        .header {
+            background:linear-gradient(rgba(8, 8, 8, 0.945),rgba(3, 3, 3, 0.267)),
+            url(coffee.jpeg) no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+        }
+
+        .container-fluid {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .coffee-logo {
+            max-width: 45%;
+        }
+
+        .container-fluid h4 {
+            color: #fff;
+            font-weight: 300;
+            text-transform: capitalize;
+            letter-spacing: 1px;
+            margin-top: -15px;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Змінили з justify-content: center; на align-items: center; */
+            padding-top: 50px; /* Додали відступ зверху для більшого простору */
+        }
+
+        .menu h2 {
+            font-weight: 400;
+        }
+
+        .menu h5 {
+            text-align: center;
+        }
+
+        .menu-card {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .menu img {
+            height: 10rem;
+            opacity: .85;
+        }
+
+        /* Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Зміни в дизайні кнопки і тексту в попапі */
+        #orderBtn {
+            background-color: #8c6247;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        #orderBtn:hover {
+            background-color: #614c3e;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        input[type=text] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type=text]:focus {
+                border-color: #614c3e;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-light bg-none fixed-top">
+      <a class="navbar-brand text-white" href="index.html" >Кав'ярня</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="index.html">Головна <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="beans.html">Зерна</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">Текстик</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <header class="header">
+      <div class="container-fluid">
+        <img src="coffee2.png" alt="Coffee logo" class="coffee-logo">
+        <h4>Найкраща кав'ярня в місті</h4>
+      </div>
+    </header>
+    <div class="menu">
+      <h2 class="text-center">Наші зерна</h2>
+      <div class="container">
+        <div class="row" id="coffee-container">
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="drinkName"></h2>
+        <form>
+          <label for="phone">Введіть свій номер телефону:</label><br>
+          <input type="text" id="phone" name="phone" placeholder="Номер телефону"><br><br>
+          <button type="button" id="orderBtn">Замовити зараз</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Функція для відображення даних про каву на сторінці
+        function displayCoffee(coffeeData) {
+            var coffeeContainer = $('#coffee-container');
+            coffeeContainer.empty(); // Очистка контейнера перед додаванням нових даних
+            $.each(coffeeData, function(index, coffee) {
+                var card = `
+                    <div class="menu-card col-lg-3">
+                        <img src="${coffee.image}" class="img-fluid" alt="">
+                        <h5>${coffee.name}</h5>
+                        <p>${coffee.price}</p>
+                    </div>
+                `;
+                coffeeContainer.append(card); // Додавання карточки кави до контейнера
+            });
+        }
+
+        // Функція для отримання даних про каву через AJAX запит
+        $(document).ready(function() {
+            $('.header').height($(window).height());
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:5000/beans', // URL для отримання даних про каву з сервера Flask
+                success: function(response) {
+                    displayCoffee(response); // Відображення даних про каву на сторінці при успішному отриманні
+                },
+                error: function(xhr, status, error) {
+                    alert('Помилка при отриманні даних про каву'); // Обробка помилки при отриманні даних
+                }
+            });
+        });
+
+        // Логіка для натискання на каву через делегування подій
+        $(document).on('click', '.menu-card', function() {
+            var drinkName = $(this).find("h5").text();
+            $("#drinkName").text(drinkName);
+            $("#myModal").css("display", "block");
+        });
+
+        // Логіка для закриття модального вікна (модального popup-меню)
+        $(document).on('click', '.close, .modal', function() {
+            $("#myModal").css("display", "none");
+        });
+
+        // Запобігання закриттю модального вікна при кліці в середині
+        $(document).on('click', '.modal-content', function(event) {
+            event.stopPropagation();
+        });
+
+        // Логіка для замовлення
+        $("#orderBtn").click(function(){
+            var phone = $("#phone").val();
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:5000/order",
+                contentType: "application/json",
+                data: JSON.stringify({"phone": phone}),
+                success: function(response) {
+                    alert(response);
+                    // Очистка поля введення після замовлення
+                    $("#phone").val("");
+                    // Закриття модального вікна після замовлення
+                    // $("#myModal").css("display", "none");
+                },
+                error: function(xhr, status, error) {
+                    if (status === "error" && error === "Connection refused") {
+                        // Вивести повідомлення про те, що сервер недоступний
+                        alert("Помилка: сервер недоступний. Спробуйте ще раз пізніше.");
+                    } else {
+                        // Інші типи помилок
+                        alert("Помилка: " + xhr.responseText);
+                    }
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
